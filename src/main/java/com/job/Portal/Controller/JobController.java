@@ -21,13 +21,13 @@ public class JobController {
     }
 
     @GetMapping
-    public List<Job> getAllJob() {
+    public List<JobDto> getAllJob() {
         return jobService.getAllJob();
     }
 
     @GetMapping("/{id}")
     //pathvariable -> used to take value from url
-    public Job getJobById(@PathVariable Long id) {
+    public JobDto getJobById(@PathVariable Long id) {
         return jobService.getJobById(id);
     }
 

@@ -6,6 +6,7 @@ import com.job.Portal.Repository.JobRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -39,12 +40,35 @@ public class JobService {
         return response;
     }
 
-    public List<Job> getAllJob() {
-        return jobRepository.findAll();
+    public List<JobDto> getAllJob() {
+        List<Job> jobs = jobRepository.findAll();
+        List<JobDto> jobDtos = new ArrayList<>();
+
+        for(Job job : jobs) {
+            JobDto jobDto = new JobDto();
+
+            jobDto.setId(job.getId());
+            jobDto.setTitle(job.getTitle());
+            jobDto.setDescription(job.getDescription());
+            jobDto.setCompany(job.getCompany());
+            jobDto.setLocation(job.getLocation());
+
+            jobDtos.add(jobDto);
+        }
+        return jobDtos;
     }
 
-    public Job getJobById(Long id) {
-        return jobRepository.findById(id).orElseThrow(() -> new RuntimeException("Job not found"));
+    public JobDto getJobById(Long id) {
+        Job job = jobRepository.findById(id).orElseThrow(() -> new RuntimeException("Job not found"));
+        JobDto jobDto = new JobDto();
+
+        jobDto.setId(job.getId());
+        jobDto.setTitle(job.getTitle());
+        jobDto.setDescription(job.getDescription());
+        jobDto.setCompany(job.getCompany());
+        jobDto.setLocation(job.getLocation());
+
+        return jobDto;
     }
 
     //void because delete operation doesnt return
