@@ -5,6 +5,7 @@ import com.job.Portal.Entity.Job;
 import com.job.Portal.Repository.JobRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import com.job.Portal.exception.JobNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,11 +18,11 @@ public class JobService {
     public JobDto createJob(JobDto jobDto) {
 //        return jobRepository.save(job);   -> before dto, repository expects a job entity not dto
         Job job = new Job();
-        job.setTitle(job.getTitle());
-        job.setCompany(job.getCompany());
-        job.setLocation(job.getLocation());
-        job.setDescription(job.getDescription());
-        job.setSalary(job.getSalary());
+        job.setTitle(jobDto.getTitle());
+        job.setCompany(jobDto.getCompany());
+        job.setLocation(jobDto.getLocation());
+        job.setDescription(jobDto.getDescription());
+        job.setSalary(jobDto.getSalary());
 
         // id -> null after saving id = 1
         Job savedJob = jobRepository.save(job);
@@ -52,6 +53,7 @@ public class JobService {
             jobDto.setDescription(job.getDescription());
             jobDto.setCompany(job.getCompany());
             jobDto.setLocation(job.getLocation());
+            jobDto.setSalary(job.getSalary());
 
             jobDtos.add(jobDto);
         }
@@ -59,7 +61,7 @@ public class JobService {
     }
 
     public JobDto getJobById(Long id) {
-        Job job = jobRepository.findById(id).orElseThrow(() -> new RuntimeException("Job not found"));
+        Job job = jobRepository.findById(id).orElseThrow(() -> new JobNotFoundException("Job not found"));
         JobDto jobDto = new JobDto();
 
         jobDto.setId(job.getId());
@@ -67,6 +69,7 @@ public class JobService {
         jobDto.setDescription(job.getDescription());
         jobDto.setCompany(job.getCompany());
         jobDto.setLocation(job.getLocation());
+        jobDto.setSalary(job.getSalary());
 
         return jobDto;
     }
@@ -74,13 +77,13 @@ public class JobService {
     //void because delete operation doesnt return
     public void deleteJob(Long id) {
         if(!jobRepository.existsById(id)) {
-            throw new RuntimeException("Job not found");
+            throw new JobNotFoundException("Job not found with id: " + id);
         }
         jobRepository.deleteById(id);
     }
 
-    public JobDto updateJob(Long id, @org.jetbrains.annotations.UnknownNullability JobDto updatedJob) {
-        Job existingJob = jobRepository.findById(id).orElseThrow(() -> new RuntimeException("Job not found"));
+    public JobDto updateJob(Long id, JobDto updatedJob) {
+        Job existingJob = jobRepository.findById(id).orElseThrow(() -> new JobNotFoundException("Job not found with id: " + id));
 
         existingJob.setCompany(updatedJob.getCompany());
         existingJob.setTitle(updatedJob.getTitle());

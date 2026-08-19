@@ -3,6 +3,7 @@ package com.job.Portal.Controller;
 import com.job.Portal.Dto.JobDto;
 import com.job.Portal.Entity.Job;
 import com.job.Portal.Service.JobService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +17,7 @@ public class JobController {
 
     @PostMapping
     //Take the JSON sent by the client and convert it into a Job object.
-    public JobDto createJob(@RequestBody JobDto jobDto) {
+    public JobDto createJob(@Valid @RequestBody JobDto jobDto) {
         return jobService.createJob(jobDto);
     }
 
@@ -38,7 +39,7 @@ public class JobController {
     //delete dosent need a dto
 
     @PutMapping("/{id}")
-    public JobDto updateJob(@PathVariable Long id, @RequestBody JobDto jobDto) {
+    public JobDto updateJob(@PathVariable Long id,@Valid @RequestBody JobDto jobDto) {
         return jobService.updateJob(id, jobDto);
     }
 }
