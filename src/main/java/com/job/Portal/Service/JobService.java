@@ -1,0 +1,69 @@
+package com.job.Portal.Service;
+
+import com.job.Portal.Dto.JobDto;
+import com.job.Portal.Entity.Job;
+import com.job.Portal.Repository.JobRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@AllArgsConstructor
+public class JobService {
+    public final JobRepository jobRepository;
+
+    public JobDto createJob(JobDto jobDto) {
+//        return jobRepository.save(job);   -> before dto, repository expects a job entity not dto
+        Job job = new Job();
+        job.setTitle(job.getTitle());
+        job.setCompany(job.getCompany());
+        job.setLocation(job.getLocation());
+        job.setDescription(job.getDescription());
+        job.setSalary(job.getSalary());
+
+        // id -> null after saving id = 1
+        Job savedJob = jobRepository.save(job);
+        //job is saved in db
+//        return jobDto;
+
+        JobDto response = new JobDto();
+        //dto created from saved entity
+        response.setId(savedJob.getId());
+        response.setTitle(savedJob.getTitle());
+        response.setCompany(savedJob.getCompany());
+        response.setLocation(savedJob.getLocation());
+        response.setDescription(savedJob.getDescription());
+        response.setSalary(savedJob.getSalary());
+
+        return response;
+    }
+
+    public List<Job> getAllJob() {
+        return jobRepository.findAll();
+    }
+
+    public Job getJobById(Long id) {
+        return jobRepository.findById(id).orElseThrow(() -> new RuntimeException("Job not found"));
+    }
+
+    //void because delete operation doesnt return
+    public void deleteJob(Long id) {
+        if(!jobRepository.existsById(id)) {
+            throw new RuntimeException("Job not found");
+        }
+        jobRepository.deleteById(id);
+    }
+
+    public Job updateJob(Long id, Job updatedJob) {
+        Job existingJob = jobRepository.findById(id).orElseThrow(() -> new RuntimeException("Job not found"));
+
+        existingJob.setCompany(updatedJob.getCompany());
+        existingJob.setTitle(updatedJob.getTitle());
+        existingJob.setDescription(updatedJob.getDescription());
+        existingJob.setSalary(updatedJob.getSalary());
+        existingJob.setLocation(updatedJob.getLocation());
+
+        return jobRepository.save(existingJob);
+    }
+}
