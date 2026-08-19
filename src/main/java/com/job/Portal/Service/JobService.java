@@ -79,7 +79,7 @@ public class JobService {
         jobRepository.deleteById(id);
     }
 
-    public JobDto updateJob(Long id, Job updatedJob) {
+    public JobDto updateJob(Long id, @org.jetbrains.annotations.UnknownNullability JobDto updatedJob) {
         Job existingJob = jobRepository.findById(id).orElseThrow(() -> new RuntimeException("Job not found"));
 
         existingJob.setCompany(updatedJob.getCompany());
