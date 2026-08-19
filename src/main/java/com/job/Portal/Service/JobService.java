@@ -79,7 +79,7 @@ public class JobService {
         jobRepository.deleteById(id);
     }
 
-    public Job updateJob(Long id, Job updatedJob) {
+    public JobDto updateJob(Long id, Job updatedJob) {
         Job existingJob = jobRepository.findById(id).orElseThrow(() -> new RuntimeException("Job not found"));
 
         existingJob.setCompany(updatedJob.getCompany());
@@ -88,6 +88,17 @@ public class JobService {
         existingJob.setSalary(updatedJob.getSalary());
         existingJob.setLocation(updatedJob.getLocation());
 
-        return jobRepository.save(existingJob);
+        Job savedJob = jobRepository.save(existingJob);
+
+        JobDto responseDto = new JobDto();
+
+        responseDto.setId(savedJob.getId());
+        responseDto.setSalary(savedJob.getSalary());
+        responseDto.setCompany(savedJob.getCompany());
+        responseDto.setTitle(savedJob.getTitle());
+        responseDto.setLocation(savedJob.getLocation());
+        responseDto.setDescription(savedJob.getDescription());
+
+        return responseDto;
     }
 }

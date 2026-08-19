@@ -35,9 +35,10 @@ public class JobController {
     public void deleteJob(@PathVariable Long id) {
         jobService.deleteJob(id);   //no return as nothing is returning
     }
+    //delete dosent need a dto
 
     @PutMapping("/{id}")
-    public Job updateJob(@PathVariable Long id, @RequestBody Job job) {
-        return jobService.updateJob(id, job);
+    public JobDto updateJob(@PathVariable Long id, @RequestBody JobDto jobDto) {
+        return jobService.updateJob(id, jobDto);
     }
 }
