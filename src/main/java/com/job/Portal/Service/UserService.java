@@ -1,5 +1,6 @@
 package com.job.Portal.Service;
 
+import com.job.Portal.Dto.LoginRequestDto;
 import com.job.Portal.Dto.UserDto;
 import com.job.Portal.Dto.UserResponseDto;
 import com.job.Portal.Entity.User;
@@ -35,6 +36,24 @@ public class UserService {
         //user response doesn't contain a password
         response.setEmail(savedUser.getEmail());
         response.setRole(savedUser.getRole());
+
+        return response;
+    }
+
+    public UserResponseDto login(LoginRequestDto loginRequestDto) {
+        User user = userRepository.findByEmail(loginRequestDto.getEmail())
+                .orElseThrow(() -> new RuntimeException("Invalid email or password"));
+
+        if (!passwordEncoder.matches(loginRequestDto.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Invalid enail or password");
+        }
+
+        UserResponseDto response = new UserResponseDto();
+
+        response.setId(user.getId());
+        response.setName(user.getName());
+        response.setEmail(user.getEmail());
+        response.setRole(user.getRole());
 
         return response;
     }

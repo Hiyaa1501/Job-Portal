@@ -1,5 +1,6 @@
 package com.job.Portal.Controller;
 
+import com.job.Portal.Dto.LoginRequestDto;
 import com.job.Portal.Dto.UserDto;
 import com.job.Portal.Dto.UserResponseDto;
 import com.job.Portal.Service.UserService;
@@ -19,5 +20,10 @@ public class UserController {
     @PostMapping
     public UserResponseDto createUser(@Valid @RequestBody UserDto userDto) {
         return userService.createUser(userDto);
+    }
+
+    @PostMapping("/login")
+    public UserResponseDto login(@Valid @RequestBody LoginRequestDto loginRequestDto) {
+        return userService.login(loginRequestDto);
     }
 }
