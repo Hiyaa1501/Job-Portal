@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static jdk.internal.jrtfs.JrtFileAttributeView.AttrID.size;
-
 @RestController
 @RequestMapping("/job")    //contains url
 @AllArgsConstructor
@@ -23,10 +21,10 @@ public class JobController {
         return jobService.createJob(jobDto);
     }
 
-    @GetMapping
-    public List<JobDto> getAllJob() {
-        return jobService.getAllJob();
-    }
+//    @GetMapping
+//    public List<JobDto> getAllJob() {
+//        return jobService.getAllJob();
+//    }
 
     @GetMapping("/{id}")
     //pathvariable -> used to take value from url
@@ -66,5 +64,13 @@ public class JobController {
                                    @RequestParam(defaultValue = "salary") String sortBy,
                                    @RequestParam(defaultValue = "desc") String direction) {
         return jobService.getAllJobs(page, size, sortBy, direction);
+    }
+
+    @GetMapping("/search/filter")
+    public List<JobDto> searchJobs(@RequestParam(required = false) String keyword,
+                                   @RequestParam(required = false) String location,
+                                   @RequestParam(defaultValue = "0") long minSalary,
+                                   @RequestParam(defaultValue = "999999999") long maxSalary) {
+        return jobService.searchJobs(keyword, location, minSalary, maxSalary);
     }
 }

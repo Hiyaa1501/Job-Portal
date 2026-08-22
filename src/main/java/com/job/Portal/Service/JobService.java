@@ -145,7 +145,7 @@ public class JobService {
         return jobDtos;
     }
 
-    //filter
+    //filter -> same for min/ max salary
     public List<JobDto> searchJobsByCompany(String company) {
         List<Job> jobs = jobRepository.findByCompanyContainingIgnoreCase(company);
         List<JobDto> jobDtos = new ArrayList<>();
@@ -191,5 +191,34 @@ public class JobService {
             jobDtos.add(jobDto);
         }
         return new PageImpl<>(jobDtos, pageable, jobs.getTotalElements());
+    }
+
+    //advanced filtering -> all together
+    public List<JobDto> searchJobs(String keyword, String location, long minSalary, long maxSalary) {
+        List<Job> jobs = jobRepository.findAll();
+        List<JobDto> jobDtos = new ArrayList<>();
+
+        for(Job job : jobs) {
+            // checks whether "java developer" contains "java"
+            boolean titleMatches = keyword == null || job.getTitle().toLowerCase().contains(keyword.toLowerCase());
+            // null -> if doesnt contain the we dont filter
+            boolean locationMatches = location == null || job.getLocation().toLowerCase().contains(keyword.toLowerCase());
+            boolean salaryMatches = job.getSalary() >= minSalary && job.getSalary() <= maxSalary;
+
+            if (titleMatches && locationMatches && salaryMatches) {
+
+                JobDto jobDto = new JobDto();
+
+                jobDto.setId(job.getId());
+                jobDto.setTitle(job.getTitle());
+                jobDto.setDescription(job.getDescription());
+                jobDto.setCompany(job.getCompany());
+                jobDto.setLocation(job.getLocation());
+                jobDto.setSalary(job.getSalary());
+
+                jobDtos.add(jobDto);
+            }
+        }
+        return jobDtos;
     }
 }
