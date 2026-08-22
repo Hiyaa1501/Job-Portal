@@ -42,4 +42,19 @@ public class JobController {
     public JobDto updateJob(@PathVariable Long id,@Valid @RequestBody JobDto jobDto) {
         return jobService.updateJob(id, jobDto);
     }
+
+    @GetMapping("/search")
+    public List<JobDto> searchJobs(@RequestParam("keyword") String keyword) {
+        return jobService.searchJobs(keyword);
+    }
+
+    @GetMapping("/search/location")
+    public List<JobDto> searchLocation(@RequestParam("location") String location) {
+        return jobService.searchLocation(location);
+    }
+
+    @GetMapping("/search/company")
+    public List<JobDto> searchJobsByCompany(@RequestParam("company") String company) {
+        return jobService.searchJobsByCompany(company);
+    }
 }

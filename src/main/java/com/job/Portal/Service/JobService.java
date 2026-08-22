@@ -18,6 +18,7 @@ public class JobService {
     public JobDto createJob(JobDto jobDto) {
 //        return jobRepository.save(job);   -> before dto, repository expects a job entity not dto
         Job job = new Job();
+        //jobDto gets the title and job sets
         job.setTitle(jobDto.getTitle());
         job.setCompany(jobDto.getCompany());
         job.setLocation(jobDto.getLocation());
@@ -103,5 +104,62 @@ public class JobService {
         responseDto.setDescription(savedJob.getDescription());
 
         return responseDto;
+    }
+
+    public List<JobDto> searchJobs(String keyword) {
+        List<Job> jobs= jobRepository.findByTitleContainingIgnoreCase(keyword);
+        List<JobDto> jobDtos = new ArrayList<>();
+
+        for(Job job : jobs) {
+            JobDto jobDto = new JobDto();
+            //job gets the entity and jobDto sets/gives output
+            jobDto.setId(job.getId());
+            jobDto.setTitle(job.getTitle());
+            jobDto.setDescription(job.getDescription());
+            jobDto.setCompany(job.getCompany());
+            jobDto.setLocation(job.getLocation());
+            jobDto.setSalary(job.getSalary());
+
+            jobDtos.add(jobDto);
+        }
+        return jobDtos;
+    }
+
+    public List<JobDto> searchLocation(String location) {
+        List<Job> jobs = jobRepository.findByLocationContainingIgnoreCase(location);
+        List<JobDto> jobDtos = new ArrayList<>();
+
+        for(Job job : jobs) {
+            JobDto jobDto = new JobDto();
+
+            jobDto.setId(job.getId());
+            jobDto.setTitle(job.getTitle());
+            jobDto.setDescription(job.getDescription());
+            jobDto.setCompany(job.getCompany());
+            jobDto.setLocation(job.getLocation());
+            jobDto.setSalary(job.getSalary());
+
+            jobDtos.add(jobDto);
+        }
+        return jobDtos;
+    }
+
+    public List<JobDto> searchJobsByCompany(String company) {
+        List<Job> jobs = jobRepository.findByCompanyContainingIgnoreCase(company);
+        List<JobDto> jobDtos = new ArrayList<>();
+
+        for (Job job : jobs) {
+            JobDto jobDto = new JobDto();
+
+            jobDto.setId(job.getId());
+            jobDto.setTitle(job.getTitle());
+            jobDto.setDescription(job.getDescription());
+            jobDto.setCompany(job.getCompany());
+            jobDto.setLocation(job.getLocation());
+            jobDto.setSalary(job.getSalary());
+
+            jobDtos.add(jobDto);
+        }
+        return jobDtos;
     }
 }
