@@ -58,13 +58,13 @@ public class JobController {
         return jobService.searchJobsByCompany(company);
     }
 
-    @GetMapping
-    public Page<JobDto> getAllJobs(@RequestParam(defaultValue = "0") int page,
-                                   @RequestParam(defaultValue = "5") int size,
-                                   @RequestParam(defaultValue = "salary") String sortBy,
-                                   @RequestParam(defaultValue = "desc") String direction) {
-        return jobService.getAllJobs(page, size, sortBy, direction);
-    }
+//    @GetMapping
+//    public Page<JobDto> getAllJobs(@RequestParam(defaultValue = "0") int page,
+//                                   @RequestParam(defaultValue = "5") int size,
+//                                   @RequestParam(defaultValue = "salary") String sortBy,
+//                                   @RequestParam(defaultValue = "desc") String direction) {
+//        return jobService.getAllJobs(page, size, sortBy, direction);
+//    }
 
     @GetMapping("/search/filter")
     public List<JobDto> searchJobs(@RequestParam(required = false) String keyword,
