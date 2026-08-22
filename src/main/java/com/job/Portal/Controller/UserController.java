@@ -1,6 +1,7 @@
 package com.job.Portal.Controller;
 
 import com.job.Portal.Dto.UserDto;
+import com.job.Portal.Dto.UserResponseDto;
 import com.job.Portal.Service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -16,7 +17,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public UserDto createUser(@Valid @RequestBody UserDto userDto) {
+    public UserResponseDto createUser(@Valid @RequestBody UserDto userDto) {
         return userService.createUser(userDto);
     }
 }
