@@ -4,6 +4,10 @@ import com.job.Portal.Dto.JobDto;
 import com.job.Portal.Entity.Job;
 import com.job.Portal.Repository.JobRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.job.Portal.exception.JobNotFoundException;
 
@@ -161,5 +165,26 @@ public class JobService {
             jobDtos.add(jobDto);
         }
         return jobDtos;
+    }
+
+    //pagination
+    public Page<JobDto> getAllJobs(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Job> jobs = jobRepository.findAll(pageable);
+        List<JobDto>  jobDtos = new ArrayList<>();
+
+        for(Job job : jobs) {
+            JobDto jobDto = new JobDto();
+
+            jobDto.setId(job.getId());
+            jobDto.setTitle(job.getTitle());
+            jobDto.setDescription(job.getDescription());
+            jobDto.setCompany(job.getCompany());
+            jobDto.setLocation(job.getLocation());
+            jobDto.setSalary(job.getSalary());
+
+            jobDtos.add(jobDto);
+        }
+        return new PageImpl<>(jobDtos, pageable, jobs.getTotalElements());
     }
 }

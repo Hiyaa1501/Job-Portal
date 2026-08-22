@@ -5,6 +5,7 @@ import com.job.Portal.Entity.Job;
 import com.job.Portal.Service.JobService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -56,5 +57,10 @@ public class JobController {
     @GetMapping("/search/company")
     public List<JobDto> searchJobsByCompany(@RequestParam("company") String company) {
         return jobService.searchJobsByCompany(company);
+    }
+
+    @GetMapping
+    public Page<JobDto> getAllJobs(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
+        return jobService.getAllJobs(page, size);
     }
 }
