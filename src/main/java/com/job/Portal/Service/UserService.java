@@ -12,6 +12,11 @@ public class UserService {
     private final UserRepository userRepository;
 
     public UserDto createUser(UserDto userDto) {
+
+        if(userRepository.existsByEmail(userDto.getEmail())) {
+            throw new RuntimeException("Email is already registered");
+        }
+
         User user = new User();
 
         user.setName(userDto.getName());
