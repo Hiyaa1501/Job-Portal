@@ -4,10 +4,7 @@ import com.job.Portal.Dto.JobDto;
 import com.job.Portal.Entity.Job;
 import com.job.Portal.Repository.JobRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import com.job.Portal.exception.JobNotFoundException;
 
@@ -148,6 +145,7 @@ public class JobService {
         return jobDtos;
     }
 
+    //filter
     public List<JobDto> searchJobsByCompany(String company) {
         List<Job> jobs = jobRepository.findByCompanyContainingIgnoreCase(company);
         List<JobDto> jobDtos = new ArrayList<>();
@@ -167,9 +165,16 @@ public class JobService {
         return jobDtos;
     }
 
-    //pagination
-    public Page<JobDto> getAllJobs(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+    //pagination & sorting(customer choose)
+    public Page<JobDto> getAllJobs(int page, int size, String sortBy, String direction) {
+        Sort sort;
+        if (direction.equalsIgnoreCase("desc")) {
+            sort = Sort.by(sortBy).descending();
+        } else {
+            sort = Sort.by(sortBy).ascending();
+        }
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("salary").descending());
         Page<Job> jobs = jobRepository.findAll(pageable);
         List<JobDto>  jobDtos = new ArrayList<>();
 

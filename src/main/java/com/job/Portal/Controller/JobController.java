@@ -1,7 +1,6 @@
 package com.job.Portal.Controller;
 
 import com.job.Portal.Dto.JobDto;
-import com.job.Portal.Entity.Job;
 import com.job.Portal.Service.JobService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -9,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static jdk.internal.jrtfs.JrtFileAttributeView.AttrID.size;
 
 @RestController
 @RequestMapping("/job")    //contains url
@@ -60,7 +61,10 @@ public class JobController {
     }
 
     @GetMapping
-    public Page<JobDto> getAllJobs(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
-        return jobService.getAllJobs(page, size);
+    public Page<JobDto> getAllJobs(@RequestParam(defaultValue = "0") int page,
+                                   @RequestParam(defaultValue = "5") int size,
+                                   @RequestParam(defaultValue = "salary") String sortBy,
+                                   @RequestParam(defaultValue = "desc") String direction) {
+        return jobService.getAllJobs(page, size, sortBy, direction);
     }
 }
