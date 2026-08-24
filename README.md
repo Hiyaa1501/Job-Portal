@@ -78,17 +78,6 @@ Repository
 MySQL Database
 ```
 
-## Job Fields
-
-The Job entity contains:
-
-* `id`
-* `title`
-* `description`
-* `company`
-* `location`
-* `salary`
-
 ## Validation & Exception Handling
 
 The project uses `@Valid` for validating incoming job requests.
