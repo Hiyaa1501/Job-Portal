@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
     public UserResponseDto createUser(UserDto userDto) {
 
@@ -47,6 +48,9 @@ public class UserService {
         if (!passwordEncoder.matches(loginRequestDto.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid enail or password");
         }
+
+        //JWT -> password correct then token will generate
+        String token = jwtService.generateToken(user.getEmail());
 
         UserResponseDto response = new UserResponseDto();
 
