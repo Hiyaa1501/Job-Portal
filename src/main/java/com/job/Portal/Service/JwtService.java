@@ -20,4 +20,8 @@ public class JwtService {
                 .signWith(getSigningKey())  //signs the token so it can later be verified
                 .compact();  //creates the actual JWT string
     }
+
+    public String extractEmail(String token) {
+        return Jwts.parser().verifyWith(getSigningKey()).build().parseSignedClaims(token).getPayload().getSubject();
+    }
 }

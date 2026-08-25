@@ -1,6 +1,7 @@
 package com.job.Portal.Service;
 
 import com.job.Portal.Dto.LoginRequestDto;
+import com.job.Portal.Dto.LoginResponseDto;
 import com.job.Portal.Dto.UserDto;
 import com.job.Portal.Dto.UserResponseDto;
 import com.job.Portal.Entity.User;
@@ -41,7 +42,7 @@ public class UserService {
         return response;
     }
 
-    public UserResponseDto login(LoginRequestDto loginRequestDto) {
+    public LoginResponseDto login(LoginRequestDto loginRequestDto) {
         User user = userRepository.findByEmail(loginRequestDto.getEmail())
                 .orElseThrow(() -> new RuntimeException("Invalid email or password"));
 
@@ -52,7 +53,7 @@ public class UserService {
         //JWT -> password correct then token will generate
         String token = jwtService.generateToken(user.getEmail());
 
-        UserResponseDto response = new UserResponseDto();
+        LoginResponseDto response = new LoginResponseDto();
 
         response.setId(user.getId());
         response.setName(user.getName());
