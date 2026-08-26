@@ -9,11 +9,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 
 @Component   //creates a jwt filter object
 @AllArgsConstructor
@@ -42,7 +44,10 @@ public class JwtFilter extends OncePerRequestFilter {
             User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
             // actual user info is accessed
 
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(email, null, null);
+            SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + user.getRole());
+
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(email, null, List.of(authority));
+
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             System.out.println("User email: " + email);
