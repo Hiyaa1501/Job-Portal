@@ -39,18 +39,23 @@ public class JwtFilter extends OncePerRequestFilter {
             //Bearer abc123
             //^^^^^^^
             //1234567
-            String email = jwtService.extractEmail(token);
-            //email extracted form token -> user repo finds the email
-            User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
-            // actual user info is accessed
+            try {   //if token is expired
+                String email = jwtService.extractEmail(token);
+                //email extracted form token -> user repo finds the email
+                User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+                // actual user info is accessed
 
-            SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + user.getRole());
+                SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + user.getRole());
 
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(email, null, List.of(authority));
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(email, null, List.of(authority));
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            System.out.println("User email: " + email);
+                System.out.println("User email: " + email);
+            } catch (Exception e) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
+            }
         }
 
         filterChain.doFilter(request, response);
