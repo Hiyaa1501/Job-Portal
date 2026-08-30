@@ -8,7 +8,7 @@ import javax.crypto.SecretKey;
 
 @Service
 public class JwtService {
-    private final String SECRET_KEY = "";
+    private final String SECRET_KEY = "my-super-secret-key-for-job-portal-2026-very-long";
 
     private SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
