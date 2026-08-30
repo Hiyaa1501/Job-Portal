@@ -1,110 +1,93 @@
 # Job Portal
 
-A Spring Boot-based Job Portal REST API that allows users to create, view, update, and delete job postings.
+A Spring Boot-based Job Portal REST API that allows users to create, view, update, and delete job postings, with user authentication and JWT-based authorization.
 
 ## Technologies Used
 
-* Java
-* Spring Boot
-* Spring Data JPA
-* Hibernate
-* MySQL
-* Maven
-* Lombok
-* Postman
-* Git & GitHub
+- Java
+- Spring Boot
+- Spring Data JPA
+- Hibernate
+- MySQL
+- Maven
+- Lombok
+- Spring Security
+- JWT
+- Jakarta Validation
+- Postman
+- Git & GitHub
 
 ## Features
 
-* Create a job
-* Get all jobs
-* Get job by ID
-* Update a job
-* Delete a job
-* DTO-based API responses
-* Request validation using Jakarta Validation
-* Global exception handling
-* Custom `JobNotFoundException`
-* MySQL database integration
-* REST APIs
-* Layered architecture
+### Job Management
+- Create a job
+- Get all jobs
+- Get job by ID
+- Update a job
+- Delete a job
+- DTO-based API responses
+- Request validation
+- Global exception handling
+- Custom `JobNotFoundException`
+- MySQL database integration
+- REST APIs
+- Layered architecture
+
+### User Authentication
+- User registration
+- User login
+- BCrypt password hashing
+- Password verification
+- JWT token generation
+- JWT token validation
+- JWT authentication filter
+- Stateless authentication
+- Protected APIs using Spring Security
+- Role-based authority support
 
 ## API Endpoints
 
-| Method | Endpoint    | Description      |
-| ------ | ----------- | ---------------- |
-| POST   | `/job`      | Create a new job |
-| GET    | `/job`      | Get all jobs     |
-| GET    | `/job/{id}` | Get job by ID    |
-| PUT    | `/job/{id}` | Update a job     |
-| DELETE | `/job/{id}` | Delete a job     |
+### Job APIs
 
-## Project Structure
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/job` | Create a new job |
+| GET | `/job` | Get all jobs |
+| GET | `/job/{id}` | Get job by ID |
+| PUT | `/job/{id}` | Update a job |
+| DELETE | `/job/{id}` | Delete a job |
 
-```text
-src/main/java/com/job/Portal
-│
-├── Controller
-│   └── JobController.java
-│
-├── Service
-│   └── JobService.java
-│
-├── Repository
-│   └── JobRepository.java
-│
-├── Entity
-│   └── Job.java
-│
-├── DTO
-│   └── JobDto.java
-│
-└── Exception
-    ├── JobNotFoundException.java
-    └── GlobalExceptionHandler.java
-```
+### User APIs
 
-## Architecture
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/user` | Register a new user |
+| POST | `/user/login` | Login and receive JWT |
+
+## Authentication Flow
+
+The application uses **Spring Security and JWT** for authentication.
 
 ```text
-Client (Postman)
+User Registration
        ↓
-Controller
+Password encoded using BCrypt
        ↓
-Service
+User stored in MySQL
        ↓
-Repository
+User Login
        ↓
-MySQL Database
-```
-
-## Validation & Exception Handling
-
-The project uses `@Valid` for validating incoming job requests.
-
-Global exception handling is implemented using:
-
-* `@RestControllerAdvice`
-* `@ExceptionHandler`
-* `JobNotFoundException`
-* `MethodArgumentNotValidException`
-
-This provides meaningful HTTP responses when a job is not found or when request validation fails.
-
-## API Response
-
-The API uses `JobDto` for request and response data instead of directly exposing the entity.
-
-## Database
-
-The application uses **MySQL** with **Spring Data JPA/Hibernate** for database operations.
-
-## Tools
-
-* IntelliJ IDEA
-* Maven
-* MySQL
-* Postman
-* Git
-* GitHub
+Password verification
+       ↓
+JWT generated
+       ↓
+JWT returned to client
+       ↓
+Client sends JWT with requests
+       ↓
+JwtFilter validates token
+       ↓
+SecurityContext
+       ↓
+Protected API accessed
 
